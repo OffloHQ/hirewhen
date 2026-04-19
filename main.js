@@ -1,6 +1,16 @@
+import {
+  buildHireEmailBody,
+  buildHireInsights,
+  buildHireSummary,
+  calculateHireDecision,
+  formatCurrency,
+  parseNumber
+} from './calculator-utils.js';
+
 const form = document.getElementById('hire-form');
 const addsRevenueRadios = document.querySelectorAll('input[name="adds-revenue"]');
 const addedRevenueGroup = document.getElementById('added-revenue-group');
+const addedRevenueInput = document.getElementById('added-revenue');
 const formError = document.getElementById('form-error');
 
 const resultSection = document.getElementById('result-section');
@@ -52,7 +62,7 @@ function syncAddedRevenueVisibility() {
     addedRevenueGroup.hidden = false;
   } else {
     addedRevenueGroup.hidden = true;
-    document.getElementById('added-revenue').value = '';
+    addedRevenueInput.value = '';
   }
 }
 
@@ -63,51 +73,7 @@ addsRevenueRadios.forEach(function(radio) {
 syncAddedRevenueVisibility();
 
 function getVal(id) {
-  var raw = document.getElementById(id).value.trim();
-  var num = parseFloat(raw);
-  return isNaN(num) ? null : num;
-}
-
-function formatCurrency(num) {
-  var abs = Math.abs(num);
-  var formatted = abs.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  return (num < 0 ? '-' : '') + '$' + formatted;
-}
-
-function classify(remaining) {
-  if (remaining >= 200) return 'safe';
-  if (remaining >= -500) return 'close';
-  return 'risky';
-}
-
-function buildInsights(revenue, expenses, salary, addedRevenue, remaining) {
-  var items = [];
-
-  if (addedRevenue === 0 || addedRevenue === null) {
-    var neededAdded = -(remaining - 200);
-    if (neededAdded > 0) {
-      items.push('If this hire brings in ' + formatCurrency(neededAdded) + '/month or more, hiring becomes sustainable.');
-    }
-  }
-
-  if (remaining < 200) {
-    var currentExpenses = expenses;
-    var targetExpenses = revenue - salary - 200 + (addedRevenue || 0);
-    var reduction = currentExpenses - targetExpenses;
-    if (reduction > 0) {
-      items.push('Reducing expenses by ' + formatCurrency(reduction) + '/month would make hiring viable.');
-    }
-  }
-
-  if (remaining >= 200 && addedRevenue > 0) {
-    items.push('With the added revenue from this hire, your margin looks healthy. Keep monitoring monthly cash flow as you scale.');
-  }
-
-  if (remaining >= 200 && (addedRevenue === 0 || addedRevenue === null)) {
-    items.push('Your current cash flow can support this hire. Consider setting aside a 2-3 month salary buffer before onboarding.');
-  }
-
-  return items;
+  return parseNumber(document.getElementById(id).value);
 }
 
 form.addEventListener('submit', function(e) {
@@ -139,8 +105,15 @@ form.addEventListener('submit', function(e) {
 
   formError.hidden = true;
 
-  var remaining = revenue - expenses - salary + addedRevenue;
-  var state = classify(remaining);
+  var result = calculateHireDecision({
+    revenue: revenue,
+    expenses: expenses,
+    salary: salary,
+    addedRevenue: addedRevenue,
+    cashSaved: cashSaved
+  });
+  var remaining = result.remaining;
+  var state = result.state;
 
   var headlines = {
     safe: 'You can afford to hire right now',
@@ -183,7 +156,7 @@ form.addEventListener('submit', function(e) {
     bdRunwayRow.hidden = true;
   }
 
-  var insights = buildInsights(revenue, expenses, salary, addedRevenue, remaining);
+  var insights = buildHireInsights(result);
   insightsEl.innerHTML = '';
   insights.forEach(function(text) {
     var div = document.createElement('div');
@@ -192,7 +165,16 @@ form.addEventListener('submit', function(e) {
     insightsEl.appendChild(div);
   });
 
-  lastResult = { state: state, revenue: revenue, expenses: expenses, salary: salary, addedRevenue: addedRevenue, remaining: remaining, cashSaved: cashSaved, addsRevenue: addsRevenue };
+  lastResult = {
+    state: state,
+    revenue: revenue,
+    expenses: expenses,
+    salary: salary,
+    addedRevenue: addedRevenue,
+    remaining: remaining,
+    cashSaved: cashSaved,
+    addsRevenue: addsRevenue
+  };
 
   updateShareURL(revenue, expenses, salary, cashSaved, addsRevenue, addedRevenue);
   updateEmailLink(state, revenue, expenses, salary, remaining, cashSaved);
@@ -225,37 +207,27 @@ function buildShareURL() {
 }
 
 function buildSummaryText(state, revenue, expenses, salary, remaining, cashSaved) {
-  var lines = [
-    'HireWhen result: ' + state.toUpperCase(),
-    'Revenue: ' + formatCurrency(revenue),
-    'Expenses: ' + formatCurrency(expenses),
-    'Salary: ' + formatCurrency(salary),
-    'Remaining: ' + formatCurrency(remaining)
-  ];
-  if (cashSaved !== null && remaining < 0) {
-    var runway = cashSaved / Math.abs(remaining);
-    lines.push('Estimated runway: ' + runway.toFixed(1) + ' months');
-  }
-  return lines.join('\n');
+  return buildHireSummary({
+    state: state,
+    revenue: revenue,
+    expenses: expenses,
+    salary: salary,
+    remaining: remaining,
+    cashSaved: cashSaved
+  });
 }
 
 function updateEmailLink(state, revenue, expenses, salary, remaining, cashSaved) {
   var shareURL = buildShareURL();
-  var body = [
-    'I ran my numbers through HireWhen.',
-    '',
-    'Result: ' + state.toUpperCase(),
-    'Revenue: ' + formatCurrency(revenue),
-    'Expenses: ' + formatCurrency(expenses),
-    'Salary: ' + formatCurrency(salary),
-    'Remaining: ' + formatCurrency(remaining)
-  ];
-  if (cashSaved !== null && remaining < 0) {
-    var runway = cashSaved / Math.abs(remaining);
-    body.push('Estimated runway: ' + runway.toFixed(1) + ' months');
-  }
-  body.push('', 'Review it here:', shareURL);
-  emailBtn.href = 'mailto:?subject=' + encodeURIComponent('HireWhen Result') + '&body=' + encodeURIComponent(body.join('\n'));
+  var body = buildHireEmailBody({
+    state: state,
+    revenue: revenue,
+    expenses: expenses,
+    salary: salary,
+    remaining: remaining,
+    cashSaved: cashSaved
+  }, shareURL);
+  emailBtn.href = 'mailto:?subject=' + encodeURIComponent('HireWhen Result') + '&body=' + encodeURIComponent(body);
 }
 
 function showFeedback(msg) {
@@ -291,6 +263,8 @@ function prefillFromParams() {
   var cash = params.get('cash');
   var adds = params.get('adds');
   var added = params.get('added');
+  var yesRadio = document.querySelector('input[name="adds-revenue"][value="yes"]');
+  var noRadio = document.querySelector('input[name="adds-revenue"][value="no"]');
 
   document.getElementById('revenue').value = revenue;
   document.getElementById('expenses').value = expenses;
@@ -298,12 +272,12 @@ function prefillFromParams() {
   if (cash !== null) document.getElementById('cash-saved').value = cash;
 
   if (adds === 'yes') {
-    var yesRadio = document.querySelector('input[name="adds-revenue"][value="yes"]');
-    if (yesRadio) {
-      yesRadio.checked = true;
-      addedRevenueGroup.hidden = false;
-    }
-    if (added !== null) document.getElementById('added-revenue').value = added;
+    if (yesRadio) yesRadio.checked = true;
+    syncAddedRevenueVisibility();
+    if (added !== null) addedRevenueInput.value = added;
+  } else {
+    if (noRadio) noRadio.checked = true;
+    syncAddedRevenueVisibility();
   }
 
   form.dispatchEvent(new Event('submit'));

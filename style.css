@@ -8,6 +8,10 @@
   padding: 0;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 :root {
   --color-bg: #f8f8f6;
   --color-surface: #ffffff;
@@ -237,6 +241,24 @@ body {
   margin-top: 6px;
 }
 
+.revenue-toggle-group {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+
+.revenue-toggle-row {
+  margin-top: 0;
+}
+
+.revenue-toggle-hint {
+  margin-top: 0;
+  margin-bottom: 2px;
+}
+
 .field-group-inline > label {
   flex-shrink: 0;
   margin-bottom: 0;
@@ -419,7 +441,7 @@ input[type="number"].has-error {
   background: transparent;
   border: none;
   border-radius: 0;
-  padding: 10px 0 4px;
+  padding: 2px 0 2px;
   margin-bottom: 0;
 }
 
@@ -1111,6 +1133,7 @@ input[type="number"].has-error {
 }
 
 .ad-placeholder {
+  display: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
