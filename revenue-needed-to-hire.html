@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Find out how much monthly revenue your business needs before you can safely afford to hire an employee. Free reverse hiring calculator." />
+    <title>How Much Revenue Do You Need to Hire? — HireWhen</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <header class="site-header">
+      <div class="container">
+        <a href="/" class="logo">HireWhen</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container--narrow hero-inner">
+        <h1>How Much Revenue Do You Need to Hire?</h1>
+        <p class="hero-sub">Find the minimum revenue required to safely afford a new employee based on your expenses and salary.</p>
+      </div>
+    </section>
+
+    <section class="calculator-section">
+      <div class="container">
+        <div class="card calculator-card">
+          <h2 class="card-title">Hiring Target Calculator</h2>
+
+          <form id="reverse-form" novalidate>
+            <div class="form-grid">
+
+              <div class="field-group">
+                <label for="r-expenses">Monthly expenses ($)</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="r-expenses" name="r-expenses" min="0" step="1" placeholder="0" required />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="r-salary">Expected monthly salary ($)</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="r-salary" name="r-salary" min="0" step="1" placeholder="0" required />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="r-buffer">Desired safety buffer</label>
+                <select id="r-buffer" name="r-buffer">
+                  <option value="0.10">10% — Lean</option>
+                  <option value="0.20" selected>20% — Recommended</option>
+                  <option value="0.30">30% — Conservative</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="r-cash">
+                  Cash saved (optional)
+                  <span class="label-note" style="margin-left:6px;">for runway estimate</span>
+                </label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="r-cash" name="r-cash" min="0" step="1" placeholder="0" />
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-error" id="r-form-error" hidden>
+              Please enter your monthly expenses and expected salary.
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Calculate required revenue</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="result-section" id="r-result-section" hidden>
+      <div class="container--narrow">
+
+        <div class="result-card" id="r-result-card">
+          <h2 class="result-headline" id="r-result-headline"></h2>
+          <p class="result-subtext" id="r-result-subtext"></p>
+
+          <div class="insights" id="r-insights"></div>
+
+          <div class="breakdown">
+            <div class="breakdown-row">
+              <span class="breakdown-label">Monthly expenses</span>
+              <span class="breakdown-value negative" id="r-bd-expenses"></span>
+            </div>
+            <div class="breakdown-row">
+              <span class="breakdown-label">Salary cost</span>
+              <span class="breakdown-value negative" id="r-bd-salary"></span>
+            </div>
+            <div class="breakdown-row">
+              <span class="breakdown-label">Safety buffer (<span id="r-bd-buffer-pct"></span>%)</span>
+              <span class="breakdown-value negative" id="r-bd-buffer"></span>
+            </div>
+            <div class="breakdown-divider"></div>
+            <div class="breakdown-row breakdown-total">
+              <span class="breakdown-label">Required monthly revenue</span>
+              <span class="breakdown-value" id="r-bd-required"></span>
+            </div>
+            <div class="breakdown-row" id="r-bd-remaining-row">
+              <span class="breakdown-label">Remaining after costs</span>
+              <span class="breakdown-value positive" id="r-bd-remaining"></span>
+            </div>
+            <div class="breakdown-row" id="r-bd-runway-row" hidden>
+              <span class="breakdown-label">Runway at this revenue</span>
+              <span class="breakdown-value" id="r-bd-runway"></span>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary" id="r-reset-btn">Adjust your numbers</button>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="ad-block" id="r-ad-block" hidden>
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-container"></div>
+    </div>
+
+    <section class="support-links-section">
+      <div class="container">
+        <p class="support-links-label">Related tools</p>
+        <div class="support-links-row">
+          <a href="/" class="support-link support-link--tool">Can you afford to hire now? →</a>
+        </div>
+        <p class="support-links-label" style="margin-top:20px;">Related guides</p>
+        <div class="support-links-row">
+          <a href="/how-to-estimate-revenue.html" class="support-link">How to estimate revenue</a>
+          <a href="/how-to-estimate-business-expenses.html" class="support-link">How to estimate expenses</a>
+          <a href="/how-to-estimate-salary-cost.html" class="support-link">How to estimate salary cost</a>
+          <a href="/will-this-hire-increase-revenue.html" class="support-link">Will this hire increase revenue?</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-section">
+      <div class="container--narrow">
+        <div class="seo-block">
+          <h2>How Much Revenue Do You Need to Hire an Employee?</h2>
+          <p>Use this calculator to estimate how much revenue your business needs before hiring. It factors in your current expenses, expected salary, and a safety buffer to help you make a confident hiring decision. Whether you're planning your first hire or your fifth, knowing your revenue target gives you a clear goal to work toward.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>HireWhen &mdash; A simple hiring decision tool for small business owners.</p>
+        <p style="margin-top:10px;">&copy; HireWhen | <a href="/privacy.html">Privacy Policy</a> | <a href="/terms.html">Terms</a></p>
+      </div>
+    </footer>
+
+    <script>
+      const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+
+      const form = document.getElementById('reverse-form');
+      const resultSection = document.getElementById('r-result-section');
+      const adBlock = document.getElementById('r-ad-block');
+      const formError = document.getElementById('r-form-error');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const expenses = parseFloat(document.getElementById('r-expenses').value) || 0;
+        const salary = parseFloat(document.getElementById('r-salary').value) || 0;
+        const buffer = parseFloat(document.getElementById('r-buffer').value);
+        const cash = parseFloat(document.getElementById('r-cash').value) || 0;
+
+        if (expenses <= 0 && salary <= 0) {
+          formError.hidden = false;
+          document.getElementById('r-expenses').classList.add('has-error');
+          document.getElementById('r-salary').classList.add('has-error');
+          return;
+        }
+
+        formError.hidden = true;
+        document.getElementById('r-expenses').classList.remove('has-error');
+        document.getElementById('r-salary').classList.remove('has-error');
+
+        const requiredRevenue = (expenses + salary) / (1 - buffer);
+        const bufferAmount = requiredRevenue - expenses - salary;
+        const remaining = requiredRevenue - expenses - salary;
+        const bufferPct = Math.round(buffer * 100);
+
+        document.getElementById('r-result-headline').textContent =
+          'You should be making at least ' + fmt(requiredRevenue) + '/month to hire safely.';
+
+        document.getElementById('r-result-subtext').textContent =
+          'This includes a ' + bufferPct + '% safety buffer. At this revenue level, you\'ll have ~' + fmt(remaining) + ' remaining each month after all costs.';
+
+        document.getElementById('r-bd-expenses').textContent = fmt(expenses);
+        document.getElementById('r-bd-salary').textContent = fmt(salary);
+        document.getElementById('r-bd-buffer-pct').textContent = bufferPct;
+        document.getElementById('r-bd-buffer').textContent = fmt(bufferAmount);
+        document.getElementById('r-bd-required').textContent = fmt(requiredRevenue);
+        document.getElementById('r-bd-remaining').textContent = fmt(remaining);
+
+        const runwayRow = document.getElementById('r-bd-runway-row');
+        if (cash > 0) {
+          const monthlyShortfall = expenses + salary;
+          const runway = Math.floor(cash / monthlyShortfall);
+          document.getElementById('r-bd-runway').textContent = runway + ' month' + (runway !== 1 ? 's' : '') + ' of cash runway';
+          runwayRow.hidden = false;
+        } else {
+          runwayRow.hidden = true;
+        }
+
+        const insights = document.getElementById('r-insights');
+        insights.innerHTML = '';
+
+        const revenueGap = requiredRevenue * 0.2;
+        const expenseReduction = requiredRevenue * 0.1;
+
+        const i1 = document.createElement('div');
+        i1.className = 'insight-item';
+        i1.textContent = 'If you increase revenue by ' + fmt(revenueGap) + ', you\'d have a stronger buffer for hiring.';
+        insights.appendChild(i1);
+
+        const i2 = document.createElement('div');
+        i2.className = 'insight-item';
+        i2.textContent = 'Reducing expenses by ' + fmt(expenseReduction) + ' would lower your required revenue to ' + fmt(requiredRevenue - expenseReduction) + '.';
+        insights.appendChild(i2);
+
+        form.closest('.calculator-section').hidden = true;
+        resultSection.hidden = false;
+        adBlock.hidden = false;
+        resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      document.getElementById('r-reset-btn').addEventListener('click', function() {
+        form.closest('.calculator-section').hidden = false;
+        resultSection.hidden = true;
+        adBlock.hidden = true;
+        form.reset();
+        form.closest('.calculator-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    </script>
+
+  </body>
+</html>

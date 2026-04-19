@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Find out in seconds if your business can afford to hire an employee based on your revenue, expenses, and expected salary." />
+    <title>HireWhen — Can You Afford to Hire an Employee?</title>
+    <link rel="stylesheet" href="style.css" />
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+</head>
+  <body>
+
+    <header class="site-header">
+      <div class="container--narrow">
+        <span class="logo">HireWhen</span>
+      </div>
+    </header>
+
+    <section class="hero" id="hero">
+      <div class="container--narrow hero-inner">
+        <h1>Can You Afford to Hire an Employee?</h1>
+        <p class="hero-sub">Find out in seconds if your business can afford to hire based on your revenue, expenses, and expected salary.</p>
+      </div>
+    </section>
+
+    <section class="calculator-section" id="calculator">
+      <div class="container">
+        <p class="trust-line">Takes about 10 seconds</p>
+        <div class="card calculator-card">
+          <h2 class="card-title">Your Business Snapshot</h2>
+
+          <form id="hire-form" novalidate>
+
+            <div class="form-grid">
+              <div class="field-group">
+                <label for="revenue">
+                  Revenue (monthly)
+                  <button type="button" class="hint-trigger" data-hint="hint-revenue">Not sure?</button>
+                </label>
+                <div class="hint-panel" id="hint-revenue" hidden>
+                  <strong>How to estimate revenue</strong>
+                  Estimate your monthly revenue using:<br>
+                  customers per month × average sale<br>
+                  <em>Example: 40 customers × $150 = $6,000/month</em>
+                </div>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="revenue" name="revenue" min="0" step="1" placeholder="0" required />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="expenses">
+                  Expenses (monthly)
+                  <button type="button" class="hint-trigger" data-hint="hint-expenses">Not sure?</button>
+                </label>
+                <div class="hint-panel" id="hint-expenses" hidden>
+                  <strong>How to estimate expenses</strong>
+                  Include your main monthly business costs such as rent, software, marketing, contractors, payroll, subscriptions, and other fixed expenses.
+                </div>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="expenses" name="expenses" min="0" step="1" placeholder="0" required />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="cash-saved">
+                  Cash saved (optional)
+                  <span class="label-sub-row"><span class="label-note">used to estimate runway</span><button type="button" class="hint-trigger" data-hint="hint-cash">Not sure?</button></span>
+                </label>
+                <div class="hint-panel" id="hint-cash" hidden>
+                  <strong>What counts as cash saved?</strong>
+                  Enter the amount of cash your business could realistically use as a buffer if revenue dropped or hiring took longer to pay off.
+                </div>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="cash-saved" name="cash-saved" min="0" step="1" placeholder="0" />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="salary">
+                  Salary cost (monthly)
+                  <button type="button" class="hint-trigger" data-hint="hint-salary">Not sure?</button>
+                </label>
+                <div class="hint-panel" id="hint-salary" hidden>
+                  <strong>How to estimate salary cost</strong>
+                  Use the expected monthly salary, or estimate:<br>
+                  hourly rate × hours per week × 4<br>
+                  <em>Example: $20/hr × 20 hours/week = about $1,600/month</em>
+                </div>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="salary" name="salary" min="0" step="1" placeholder="0" required />
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group field-group-full field-group-inline">
+              <label>
+                Will this hire increase revenue?
+                <button type="button" class="hint-trigger" data-hint="hint-adds">What's this?</button>
+              </label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="adds-revenue" value="no" checked />
+                  <span>No</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="adds-revenue" value="yes" />
+                  <span>Yes</span>
+                </label>
+              </div>
+            </div>
+            <div class="hint-panel hint-panel--standalone" id="hint-adds" hidden>
+              <strong>What does this mean?</strong>
+              Choose Yes if this hire is likely to directly or indirectly increase revenue.<br>
+              Examples: sales support brings in new business &middot; operations support frees your time to sell &middot; marketing support increases leads
+            </div>
+
+            <div class="field-group field-group-full conditional-field" id="added-revenue-group" hidden>
+              <label for="added-revenue">
+                Expected added revenue (monthly)
+                <button type="button" class="hint-trigger" data-hint="hint-added">Not sure?</button>
+              </label>
+              <div class="hint-panel" id="hint-added" hidden>
+                <strong>How to estimate added revenue</strong>
+                Use a rough monthly estimate of the additional revenue this hire could help create. If you're unsure, leave it at $0 and compare your result.
+              </div>
+              <div class="input-prefix-wrap input-prefix-wrap--half">
+                <span class="prefix">$</span>
+                <input type="number" id="added-revenue" name="added-revenue" min="0" step="1" placeholder="0" />
+              </div>
+              <span class="label-note hint-note">A rough estimate is fine — leave blank if unsure</span>
+            </div>
+
+            <div class="form-error" id="form-error" hidden>
+              Please fill in all required fields before calculating.
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">Calculate</button>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="support-links-section">
+      <div class="container">
+        <p class="support-links-label">Need help estimating your numbers?</p>
+        <div class="support-links-row">
+          <a href="how-to-estimate-revenue.html" class="support-link">How to estimate revenue</a>
+          <a href="how-to-estimate-business-expenses.html" class="support-link">How to estimate business expenses</a>
+          <a href="how-to-estimate-salary-cost.html" class="support-link">How to estimate salary cost</a>
+          <a href="will-this-hire-increase-revenue.html" class="support-link">Will this hire increase revenue?</a>
+        </div>
+        <p class="support-links-label" style="margin-top:20px;">Related tools</p>
+        <div class="support-links-row">
+          <a href="revenue-needed-to-hire.html" class="support-link support-link--tool">How much revenue do you need to hire? →</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="ad-block">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-container">
+        <!-- AdSense code will go here later -->
+      </div>
+    </div>
+
+    <section class="result-section" id="result-section" hidden>
+      <div class="container--narrow">
+
+        <div class="result-card" id="result-card">
+          <div class="result-badge" id="result-badge"></div>
+          <h2 class="result-headline" id="result-headline"></h2>
+          <p class="result-cashflow">Based on your current cash flow</p>
+          <p class="result-subtext" id="result-subtext"></p>
+
+          <div class="insights" id="insights"></div>
+
+          <div class="breakdown">
+            <div class="breakdown-row">
+              <span class="breakdown-label">Monthly revenue</span>
+              <span class="breakdown-value" id="bd-revenue"></span>
+            </div>
+            <div class="breakdown-row">
+              <span class="breakdown-label">Monthly expenses</span>
+              <span class="breakdown-value negative" id="bd-expenses"></span>
+            </div>
+            <div class="breakdown-row">
+              <span class="breakdown-label">Salary</span>
+              <span class="breakdown-value negative" id="bd-salary"></span>
+            </div>
+            <div class="breakdown-row" id="bd-added-row" hidden>
+              <span class="breakdown-label">Added revenue from hire</span>
+              <span class="breakdown-value positive" id="bd-added"></span>
+            </div>
+            <div class="breakdown-divider"></div>
+            <div class="breakdown-row breakdown-total">
+              <span class="breakdown-label">Monthly remaining</span>
+              <span class="breakdown-value" id="bd-remaining"></span>
+            </div>
+            <div class="breakdown-row" id="bd-runway-row" hidden>
+              <span class="breakdown-label">Estimated runway</span>
+              <span class="breakdown-value" id="bd-runway"></span>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary" id="reset-btn">Adjust your numbers</button>
+        </div>
+
+        <div class="share-actions" id="share-actions" hidden>
+          <button class="btn btn-share" id="copy-link-btn">Copy Share Link</button>
+          <button class="btn btn-share" id="copy-summary-btn">Copy Summary</button>
+          <a class="btn btn-share" id="email-btn" href="#">Email Result</a>
+          <span class="share-feedback" id="share-feedback" hidden></span>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="seo-section">
+      <div class="container--narrow">
+        <div class="seo-block">
+          <h2>When Should You Hire Your First Employee?</h2>
+          <p>Knowing when to hire your first employee is one of the biggest decisions for a small business. Hiring too early can strain cash flow, while waiting too long can limit growth. This tool helps you understand if your current revenue and expenses can support a new hire and how much margin you need to hire safely.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container--narrow">
+        <p>HireWhen &mdash; A simple hiring decision tool for small business owners.</p>
+        <nav class="support-nav" style="margin-top:12px;">
+          <span class="support-nav-label">Guides</span>
+          <a href="/how-to-estimate-revenue.html">How to Estimate Revenue</a>
+          <a href="/how-to-estimate-business-expenses.html">How to Estimate Expenses</a>
+          <a href="/how-to-estimate-salary-cost.html">How to Estimate Salary Cost</a>
+          <a href="/will-this-hire-increase-revenue.html">Will This Hire Increase Revenue?</a>
+        </nav>
+        <p style="margin-top:16px;">&copy; HireWhen | <a href="/privacy.html">Privacy Policy</a> | <a href="/terms.html">Terms</a></p>
+      </div>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
